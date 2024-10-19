@@ -14,6 +14,24 @@ export default class Ticket extends React.Component {
       },
       mainCountryCities: [],
     };
+
+    this.selectHandler = this.selectHandler.bind(this);
+  }
+
+  selectHandler(event) {
+    let mainCountry = event.target.value;
+    if (mainCountry === "-1") {
+      this.setState({
+        mainCountryCities: [],
+      });
+    } else {
+      let mainCountryProvinces = this.state.countriesData[mainCountry];
+
+      this.setState({
+        mainCountryCities: mainCountryProvinces,
+      });
+    }
+    // console.log(mainCountryProvinces);
   }
 
   render() {
@@ -33,7 +51,7 @@ export default class Ticket extends React.Component {
           <input className="emailInput" placeholder="Email" />
         </div>
         <div className="col-md-6 box">
-          <select className="countrySelect">
+          <select className="countrySelect" onChange={this.selectHandler}>
             <option value="-1">Please Select ...</option>
             <option className="option" value="Iran">
               Iran
@@ -48,7 +66,13 @@ export default class Ticket extends React.Component {
         </div>
         <div className="col-md-6 box">
           <select className="citySelect">
-            <option value="-1">Please Select City</option>
+            {this.state.mainCountryCities.length ? (
+              this.state.mainCountryCities.map((city) => (
+                <option value={city}>{city}</option>
+              ))
+            ) : (
+              <option value="-1">Please Select ...</option>
+            )}
           </select>
         </div>
         <div className="col-md-12 box">
